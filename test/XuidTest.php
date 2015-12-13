@@ -36,6 +36,11 @@ class XuidTest extends PHPUnit_Framework_TestCase
         //echo "$in->$tmp->$out";
     }
 
+    public function testStatic()
+    {
+        $xuid = Xuid::getXuid();
+        $this->assertTrue(Xuid::isValidXuid($xuid));
+    }
 
     public function testFuzz()
     {
