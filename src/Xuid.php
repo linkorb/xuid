@@ -15,6 +15,13 @@ class Xuid
         return false;
     }
     
+    public static function isValidXuid($xuid)
+    {
+        $uuid = self::decode($xuid);
+        return self::isValidUuid($uuid);
+    }
+    
+    
     public static function getXuid()
     {
         $uuid = self::getUuid();
