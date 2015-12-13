@@ -1,7 +1,7 @@
 XUID Library
 ============
 
-XUIDs are URL-friendly compressed UUIDs
+XUIDs are URL-friendly compressed UUIDs (www.xuid.org)[http://www.xuid.org]
 
 ## Why XUIDs?
 
