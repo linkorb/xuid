@@ -24,14 +24,37 @@ It also safely decodes into a full UUID string again.
 ## Usage
 
 ```php
+use Xuid\Xuid;
 
-$xuid = new \Xuid\Xuid();
+$xuid = new Xuid();
 
 $in = $xuid->getUuid(); // ffe25f31-907e-46c0-b2f8-8bbfedb9082b
 
 $tmp = $xuid->encode($in); // _-JfMZB-RsCy-Iu_7bkIKw
 
 $out = $xuid->decode($tmp); // ffe25f31-907e-46c0-b2f8-8bbfedb9082b
+
+$tmp = $xuid->getXuid();
+
+$newXuid = $xuid->getXuid();
+if (!$xuid->isValidXuid($newXuid)) {
+    // this Xuid is valid
+}
+```
+
+All methods can be called statically as well:
+
+```php
+use Xuid\Xuid;
+
+$x = Xuid::getXuid();
+$u = Xuid::decode($x);
+```
+
+## PHPUnit tests
+
+```
+vendor/bin/phpunit test/
 ```
 
 ## Brought to you by the LinkORB Engineering team
