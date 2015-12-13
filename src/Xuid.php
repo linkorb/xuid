@@ -44,7 +44,7 @@ class Xuid
         return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
     }
     
-    public function encode($uuid)
+    public static function encode($uuid)
     {
         if (!self::isValidUuid($uuid)) {
             throw new RuntimeException("Invalid UUID");
@@ -55,7 +55,7 @@ class Xuid
         return $xuid;
     }
     
-    public function decode($xuid)
+    public static function decode($xuid)
     {
         $bin = self::base64UrlDecode($xuid);
         $uuid = bin2hex($bin);
