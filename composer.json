@@ -12,9 +12,9 @@
         }
     ],
     "require": {
+        "ramsey/uuid": "~3.0"
     },
     "require-dev": {
-       "ramsey/uuid": "~3.0", 
        "phpunit/phpunit": "~5.0"
     },
     "autoload": {
