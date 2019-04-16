@@ -7,6 +7,16 @@ use RuntimeException;
 
 class Xuid
 {
+    protected static $map = [
+        '+' => '-',
+        '/' => '_',
+    ];
+
+    public static function setMap($map)
+    {
+        self::$map = $map;
+    }
+
     public static function isValidUuid($uuid)
     {
         if (preg_match("/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i", $uuid)) {
@@ -36,12 +46,22 @@ class Xuid
     
     public static function base64UrlEncode($data)
     {
-        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+        $str = rtrim(base64_encode($data), '=');
+        foreach (self::$map as $from => $to) {
+            $str = str_replace($from, $to, $str);
+        }
+        return $str;
     }
     
     public static function base64UrlDecode($data)
     {
-        return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
+        $str = strtr($data, '-_', '+/');
+        foreach (self::$map as $from => $to) {
+            $str = str_replace($to, $from, $str);
+        }
+        $str = base64_decode(str_pad($str, strlen($str) % 4, '=', STR_PAD_RIGHT));
+       
+        return $str;
     }
     
     public static function encode($uuid)

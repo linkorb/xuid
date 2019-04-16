@@ -9,7 +9,7 @@ A UUID v4 is a great choice as a primary key for your database tables.
 
 But, they are quite long to use in URLs and databases : 32 alphanumeric characters and four hyphens (36 characters total)
 
-A XUID is a UUID, converted into a 128-bit value, converted into a base64 string (stripped from padding characters), then converted into url-safe base64 (replacing `+` and `/` into `-` and `_` respectively).
+A XUID is a UUID, converted into a 128-bit value, converted into a base64 string (stripped from padding characters), then converted into url-safe base64 (replacing `+` and `/` into `-` and `_` respectively - custom mappings available, see below for more info).
 
 This gives you a 22 character string, safe to use in URLs.
 
@@ -76,6 +76,26 @@ fi_nfoXrQ_GoYrzT4oZqRw: 7e2fe77e-85eb-43f1-a862-bcd3e2866a47
 1vKKRSlHQICMj5X5iktHZA: d6f28a45-2947-4080-8c8f-95f98a4b4764
 yWJ5VPsISbS46anoEO2HVQ: c9627954-fb08-49b4-b8e9-a9e810ed8755
 ...etc
+```
+
+## Custom character mappings
+
+The default character mapping for XUIDs (url safe) is:
+
+* `+` => `-`
+* `/` => `_`
+
+But you can apply any other mapping you want for any of the characters used in base64 encoding, by calling `Xuid::map()`. For example, you can create double-click safe XUIDs (the whole XUID is selectable simply by double clicking it), by mapping `+` and `_` to selectable characters. For example:
+
+```php
+Xuid::setMap(
+    [
+        '+' => 'Æ',
+        '/' => 'Ä',
+    ]
+);
+
+echo Xuid::getXuid() . PHP_EOL; // Outputs a XUID such as `xQamÆ0kGSjepUAD1bÄ09kg`
 ```
 
 ## PHPUnit tests

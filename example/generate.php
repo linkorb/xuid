@@ -4,6 +4,13 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Xuid\Xuid;
 
+// Xuid::setMap(
+//     [
+//         '+' => 'Æ',
+//         '/' => 'Ä',
+//     ]
+// );
+
 for ($i=0; $i<100; $i++) {
     $xuid = Xuid::getXuid();
     $uuid = Xuid::decode($xuid);
