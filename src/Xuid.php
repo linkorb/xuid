@@ -12,6 +12,13 @@ class Xuid
         '/' => '_',
     ];
 
+    protected static $alphaNumericOnly = false;
+
+    public static function forceAlphaNumeric($force = true)
+    {
+        self::$alphaNumericOnly = $force;
+    }
+
     public static function setMap($map)
     {
         self::$map = $map;
@@ -34,8 +41,11 @@ class Xuid
     
     public static function getXuid()
     {
-        $uuid = self::getUuid();
-        return self::encode($uuid);
+        do {
+            $uuid = self::getUuid();
+            $xuid = self::encode($uuid);
+        } while (self::$alphaNumericOnly && !ctype_alnum($xuid));
+        return $xuid;
     }
     
     public static function getUuid()

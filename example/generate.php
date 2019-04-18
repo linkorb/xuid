@@ -11,6 +11,8 @@ use Xuid\Xuid;
 //     ]
 // );
 
+Xuid::forceAlphaNumeric();
+
 for ($i=0; $i<100; $i++) {
     $xuid = Xuid::getXuid();
     $uuid = Xuid::decode($xuid);

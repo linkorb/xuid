@@ -78,6 +78,17 @@ yWJ5VPsISbS46anoEO2HVQ: c9627954-fb08-49b4-b8e9-a9e810ed8755
 ...etc
 ```
 
+## Generatic alpha-numeric XUIDs only
+
+`-` and `_` are occassionally found in XUIDs. If you prefer alpha-numeric only XUIDs, simply call the following static method before generating your XUIDs:
+
+```php
+Xuid\Xuid::alphaNumericOnly();
+```
+
+This will keep generating XUIDs until one is found that only contains alphanumeric characters.
+That means that it could require two or more attempts before a valid XUID can be returned. In practice this does not add any noticable latency. But this is worth keeping in mind when generating XUIDs in bulk.
+
 ## Custom character mappings
 
 The default character mapping for XUIDs (url safe) is:
