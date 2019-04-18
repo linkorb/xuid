@@ -98,6 +98,8 @@ Xuid::setMap(
 echo Xuid::getXuid() . PHP_EOL; // Outputs a XUID such as `xQamÆ0kGSjepUAD1bÄ09kg`
 ```
 
+Beware to only pass in URL safe characters if your use-case requires URL safe XUIDs.
+
 ## PHPUnit tests
 
 ```
