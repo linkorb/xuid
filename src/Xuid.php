@@ -5,26 +5,54 @@ namespace Xuid;
 use Ramsey\Uuid\Uuid;
 use RuntimeException;
 
+/**
+ * XUID (eXtended Unique IDentifier) utility class
+ * 
+ * Provides functionality to generate and manipulate XUIDs, which are 
+ * URL-safe, base64-encoded representations of UUIDs.
+ */
 class Xuid
 {
-    protected static $map = [
+    /**
+     * @var array<string, string> Character mapping for base64 URL encoding
+     */
+    protected static array $map = [
         '+' => '-',
         '/' => '_',
     ];
 
-    protected static $alphaNumericOnly = false;
+    /**
+     * @var bool Whether to force alphanumeric-only XUIDs
+     */
+    protected static bool $alphaNumericOnly = false;
 
-    public static function forceAlphaNumeric($force = true)
+    /**
+     * Force generation of alphanumeric-only XUIDs
+     * 
+     * @param bool $force Whether to force alphanumeric-only generation
+     */
+    public static function forceAlphaNumeric(bool $force = true): void
     {
         self::$alphaNumericOnly = $force;
     }
 
-    public static function setMap($map)
+    /**
+     * Set custom character mapping for base64 URL encoding
+     * 
+     * @param array<string, string> $map Character mapping array
+     */
+    public static function setMap(array $map): void
     {
         self::$map = $map;
     }
 
-    public static function isValidUuid($uuid)
+    /**
+     * Validate if a string is a valid UUID
+     * 
+     * @param string $uuid The UUID string to validate
+     * @return bool True if valid UUID, false otherwise
+     */
+    public static function isValidUuid(string $uuid): bool
     {
         if (preg_match("/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i", $uuid)) {
             return true;
@@ -32,14 +60,25 @@ class Xuid
         return false;
     }
     
-    public static function isValidXuid($xuid)
+    /**
+     * Validate if a string is a valid XUID
+     * 
+     * @param string $xuid The XUID string to validate
+     * @return bool True if valid XUID, false otherwise
+     */
+    public static function isValidXuid(string $xuid): bool
     {
         $uuid = self::decode($xuid);
         return self::isValidUuid($uuid);
     }
     
     
-    public static function getXuid()
+    /**
+     * Generate a new XUID
+     * 
+     * @return string A new XUID string
+     */
+    public static function getXuid(): string
     {
         do {
             $uuid = self::getUuid();
@@ -48,13 +87,24 @@ class Xuid
         return $xuid;
     }
     
-    public static function getUuid()
+    /**
+     * Generate a new UUID v4
+     * 
+     * @return string A new UUID v4 string
+     */
+    public static function getUuid(): string
     {
         $uuid = Uuid::uuid4();
-        return $uuid;
+        return $uuid->toString();
     }
     
-    public static function base64UrlEncode($data)
+    /**
+     * Encode data using base64 URL-safe encoding
+     * 
+     * @param string $data The data to encode
+     * @return string The base64 URL-safe encoded string
+     */
+    public static function base64UrlEncode(string $data): string
     {
         $str = rtrim(base64_encode($data), '=');
         foreach (self::$map as $from => $to) {
@@ -63,7 +113,13 @@ class Xuid
         return $str;
     }
     
-    public static function base64UrlDecode($data)
+    /**
+     * Decode base64 URL-safe encoded data
+     * 
+     * @param string $data The base64 URL-safe encoded string to decode
+     * @return string The decoded data
+     */
+    public static function base64UrlDecode(string $data): string
     {
         $str = strtr($data, '-_', '+/');
         foreach (self::$map as $from => $to) {
@@ -74,7 +130,14 @@ class Xuid
         return $str;
     }
     
-    public static function encode($uuid)
+    /**
+     * Encode a UUID to XUID format
+     * 
+     * @param string $uuid The UUID string to encode
+     * @return string The encoded XUID string
+     * @throws RuntimeException If the UUID is invalid
+     */
+    public static function encode(string $uuid): string
     {
         if (!self::isValidUuid($uuid)) {
             throw new RuntimeException("Invalid UUID");
@@ -85,7 +148,14 @@ class Xuid
         return $xuid;
     }
     
-    public static function decode($xuid)
+    /**
+     * Decode a XUID to UUID format
+     * 
+     * @param string $xuid The XUID string to decode
+     * @return string The decoded UUID string
+     * @throws RuntimeException If the XUID is invalid
+     */
+    public static function decode(string $xuid): string
     {
         $bin = self::base64UrlDecode($xuid);
         $uuid = bin2hex($bin);
